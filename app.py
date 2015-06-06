@@ -5,11 +5,14 @@ import tornado.ioloop
 import tornado.web
 from tornado.options import options
 
+from pymongo import MongoClient
+
 from settings import settings
 from urls import url_patterns
 
 class TornadoBoilerplate(tornado.web.Application):
     def __init__(self):
+        self.database = MongoClient(host=settings['database']['host'], port=settings['database']['port'])
         tornado.web.Application.__init__(self, url_patterns, **settings)
 
 

@@ -44,6 +44,10 @@ settings['static_path'] = MEDIA_ROOT
 settings['cookie_secret'] = "your-cookie-secret"
 settings['xsrf_cookies'] = True
 settings['template_loader'] = tornado.template.Loader(TEMPLATE_ROOT)
+settings['database'] = {
+    'host': '127.0.0.1',
+    'port': 27017
+}
 
 SYSLOG_TAG = "boilerplate"
 SYSLOG_FACILITY = logging.handlers.SysLogHandler.LOG_LOCAL2
