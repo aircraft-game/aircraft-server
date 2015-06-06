@@ -13,7 +13,7 @@ class AccountLoginHandler(BaseHandler):
         username = self.get_argument('username')
         password = self.get_argument('password')
         if not username or not password:
-            self.raise_error_page(400)
+            return self.raise_error_page(400)
 
         db = self.application.database
         user = db.user.find_one({'username': username})
@@ -29,5 +29,25 @@ class AccountLoginHandler(BaseHandler):
 
 class AccountRegisterHandlker(BaseHandler):
     def post(self):
-        self.render('account/register.html')
+        username = self.get_argument('username')
+        password = self.get_argument('password')
+        repeat_password = self.get_argument('repeat-password')
 
+        if not username or not password or not repeat_password:
+            return self.raise_error_page(400)
+        if password != repeat_password:
+            return self.response_json(content={'message': 'repeat password wrong'}, status_code=400)
+
+        db = self.application.database
+        user = db.user.find_one({'username': username})
+        if user:
+            return self.response_json(content={'message': 'repeat username'}, status_code=400)
+
+        encrypted_password = hashlib.sha1(password).hexdigest()
+        db.user.insert({
+            'username': username,
+            'password': encrypted_password,
+        })
+
+        self.session['username'] = username
+        return self.response_json(content={'username': username})

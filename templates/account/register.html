@@ -6,27 +6,28 @@
         <title>Aircraft</title>
         <link href="{{ static_url('css/bootstrap.min.css') }}" rel="stylesheet">
         <link href="{{ static_url('css/animate.css') }}" rel="stylesheet">
+        <link href="{{ static_url('css/plugins/toastr/toastr.min.css') }}" rel="stylesheet">
         <link href="{{ static_url('css/style.css') }}" rel="stylesheet">
     </head>
 
     <body class="gray-bg">
-        <div class="middle-box text-center loginscreen   animated fadeInDown">
+        <div class="middle-box text-center loginscreen animated fadeInDown">
             <div>
                 <div>
                     <img src="{{ static_url('img/logo.png') }}">
                 </div>
                 <br/>
                 <h3>注册一个 Aircraft 账户</h3>
-                <form class="m-t" role="form" action="/api/account/register/" method="post">
+                <form class="m-t" role="form" action="/api/account/register/" method="POST" id="register-form">
                     {% module xsrf_form_html() %}
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="用户名" required="">
+                        <input type="text" class="form-control" placeholder="用户名" name="username" required="">
                     </div>
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="密码" required="">
+                        <input type="password" class="form-control" placeholder="密码" name="password" required="">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="确认密码" required="">
+                        <input type="password" class="form-control" placeholder="确认密码" name="repeat-password" required="">
                     </div>
                     <button type="submit" class="btn btn-primary block full-width m-b">注册</button>
 
@@ -41,5 +42,46 @@
         <!-- Mainly scripts -->
         <script src="{{ static_url('js/jquery-2.1.1.js') }}"></script>
         <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+        <script src="{{ static_url('js/plugins/jqueryform/jquery.form.js') }}"></script>
+        <script src="{{ static_url('js/plugins/toastr/toastr.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+                toastr.options = {
+                  "closeButton": true,
+                  "debug": false,
+                  "progressBar": false,
+                  "positionClass": "toast-bottom-center",
+                  "onclick": null,
+                  "showDuration": "400",
+                  "hideDuration": "1000",
+                  "timeOut": "7000",
+                  "extendedTimeOut": "1000",
+                  "showEasing": "swing",
+                  "hideEasing": "linear",
+                  "showMethod": "fadeIn",
+                  "hideMethod": "fadeOut"
+                };
+
+                $('#register-form').ajaxForm({
+                    success: function (data) {
+                        window.location.href = '/editor/';
+                    },
+                    error: function(xhr) {
+                        var data = $.parseJSON(xhr.responseText);
+                        if (data['message'] == 'repeat username') {
+                            toastr['error']("该用户名已注册，请尝试新的用户名");
+                        } else if (data['message'] == 'repeat password wrong') {
+                            toastr['error']("两次密码输入不一致");
+                        } else if (data['message'] == 'invalid username') {
+                            toastr['error']("不合法的用户名");
+                        } else if (data['message'] == 'invalid password') {
+                            toastr['error']("不合法的密码");
+                        } else {
+                            toastr['error']("发生意外错误");
+                        }
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

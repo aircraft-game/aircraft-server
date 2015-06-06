@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class AccountLoginView(BaseHandler):
     def get(self):
         if self.session.get('username'):
-            self.redirect('editor/')
+            self.redirect('/editor/')
 
         self.render('account/login.html')
 
@@ -18,7 +18,7 @@ class AccountLoginView(BaseHandler):
 class AccountRegisterView(BaseHandler):
     def get(self):
         if self.session.get('username'):
-            self.redirect('editor/')
+            self.redirect('/editor/')
 
         self.render('account/register.html')
 
