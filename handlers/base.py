@@ -58,6 +58,7 @@ class BaseHandler(SessionBaseHandler):
 
     def response_json(self, content, status_code=200):
         self.set_status(status_code=status_code)
+        self.set_header('Content-Type', 'application/json')
         if isinstance(content, dict) or isinstance(content, list):
             self.write(json.dumps(content))
         else:

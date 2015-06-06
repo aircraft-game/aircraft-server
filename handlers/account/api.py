@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 class AccountLoginHandler(BaseHandler):
     def post(self):
-        username = self.get_argument('username')
-        password = self.get_argument('password')
+        username = self.get_argument('username', None)
+        password = self.get_argument('password', None)
         if not username or not password:
             return self.raise_error_page(400)
 
@@ -29,8 +29,8 @@ class AccountLoginHandler(BaseHandler):
 
 class AccountRegisterHandlker(BaseHandler):
     def post(self):
-        username = self.get_argument('username')
-        password = self.get_argument('password')
+        username = self.get_argument('username', None)
+        password = self.get_argument('password', None)
         repeat_password = self.get_argument('repeat-password')
 
         if not username or not password or not repeat_password:
