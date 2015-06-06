@@ -24,9 +24,7 @@ class AccountLoginHandler(BaseHandler):
             return self.response_json(content={'message': 'wrong password'}, status_code=400)
 
         self.session['username'] = username
-        return self.response_json(content={
-            'username': username,
-        })
+        return self.response_json(content={'username': username})
 
 
 class AccountRegisterHandlker(BaseHandler):
