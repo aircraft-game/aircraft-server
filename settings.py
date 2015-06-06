@@ -46,7 +46,8 @@ settings['xsrf_cookies'] = True
 settings['template_loader'] = tornado.template.Loader(TEMPLATE_ROOT)
 settings['database'] = {
     'host': '127.0.0.1',
-    'port': 27017
+    'port': 27017,
+    'name': 'aircraft',
 }
 
 SYSLOG_TAG = "boilerplate"

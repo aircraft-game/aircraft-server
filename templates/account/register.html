@@ -17,7 +17,8 @@
                 </div>
                 <br/>
                 <h3>注册一个 Aircraft 账户</h3>
-                <form class="m-t" role="form" action="login.html">
+                <form class="m-t" role="form" action="/api/account/register/" method="post">
+                    {% module xsrf_form_html() %}
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="用户名" required="">
                     </div>

@@ -10,14 +10,29 @@ from pymongo import MongoClient
 from settings import settings
 from urls import url_patterns
 
-class TornadoBoilerplate(tornado.web.Application):
+class Application(tornado.web.Application):
     def __init__(self):
-        self.database = MongoClient(host=settings['database']['host'], port=settings['database']['port'])
+        self.database = MongoClient(
+            host=settings['database']['host'],
+            port=settings['database']['port']
+        ).get_database(name=settings['database']['name'])
+
+        session_settings = dict(
+            driver="redis",
+            driver_settings=dict(
+                host='localhost',
+                port=6379,
+                db=0,
+                max_connections=1024,
+            )
+        )
+        settings.update(session=session_settings)
+
         tornado.web.Application.__init__(self, url_patterns, **settings)
 
 
 def main():
-    app = TornadoBoilerplate()
+    app = Application()
     http_server = tornado.httpserver.HTTPServer(app)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()

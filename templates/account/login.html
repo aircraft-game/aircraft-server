@@ -17,12 +17,13 @@
                 </div>
                 <br/>
                 <h3>登录 Aircraft 账户</h3>
-                <form class="m-t" role="form" action="index.html">
+                <form class="m-t" role="form" action="/api/account/login/" method="POST">
+                    {% module xsrf_form_html() %}
                     <div class="form-group">
-                        <input type="email" class="form-control" placeholder="用户名" required="">
+                        <input type="text" class="form-control" placeholder="用户名" name="username" required="">
                     </div>
                     <div class="form-group">
-                        <input type="password" class="form-control" placeholder="密码" required="">
+                        <input type="password" class="form-control" placeholder="密码" name="password" required="">
                     </div>
                     <button type="submit" class="btn btn-primary block full-width m-b">登录</button>
 
@@ -37,5 +38,10 @@
         <!-- Mainly scripts -->
         <script src="{{ static_url('js/jquery-2.1.1.js') }}"></script>
         <script src="{{ static_url('js/bootstrap.min.js') }}"></script>
+        <script>
+            $(document).ready(function() {
+
+            });
+        </script>
     </body>
 </html>

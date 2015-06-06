@@ -1,11 +1,15 @@
+# -*- coding: utf-8 -*-
+
+import logging
 import json
 import tornado.web
 
-import logging
-logger = logging.getLogger('boilerplate.' + __name__)
+from torndsession.sessionhandler import SessionBaseHandler
+
+logger = logging.getLogger(__name__)
 
 
-class BaseHandler(tornado.web.RequestHandler):
+class BaseHandler(SessionBaseHandler):
     """A class to collect common handler methods - all other handlers should
     subclass this one.
     """
@@ -43,3 +47,18 @@ class BaseHandler(tornado.web.RequestHandler):
         arg = self.request.arguments[name]
         logger.debug("Found '%s': %s in JSON arguments" % (name, arg))
         return arg
+
+    def raise_error_page(self, error_code):
+        if error_code == 400:
+            self.set_status(status_code=400)
+            self.render('400.html')
+        else:
+            self.set_status(status_code=500)
+            self.render('500.html')
+
+    def response_json(self, content, status_code=200):
+        self.set_status(status_code=status_code)
+        if isinstance(content, dict) or isinstance(content, list):
+            self.write(json.dumps(content))
+        else:
+            self.write(content)
