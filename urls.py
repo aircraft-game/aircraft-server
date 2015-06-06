@@ -1,5 +1,8 @@
-from handlers.foo import FooHandler
+# -*- coding: utf-8 -*-
+
+from handlers.account.views import AccountLoginView, AccountRegisterView
 
 url_patterns = [
-    (r"/foo", FooHandler),
+    (r'/account/login/?', AccountLoginView),
+    (r'/account/register/?', AccountRegisterView),
 ]
